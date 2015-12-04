@@ -450,7 +450,7 @@ class GlanceImage(image.Image):
                             img['disk_format'] or "qcow2",
                             meta['img_loc']
                         )
-                        recreated_image = utl.ext_dict(
+                        recreated_image = utl.ExtDict(
                             name=img["name"]
                         )
                         created_images.append((recreated_image, meta))
@@ -502,7 +502,7 @@ class GlanceImage(image.Image):
                 if not img["disk_format"]:
                     delete_disk_format.append(created_image.id)
             elif img['resource'] is None:
-                recreated_image = utl.ext_dict(name=img["name"])
+                recreated_image = utl.ExtDict(name=img["name"])
                 created_images.append((recreated_image, meta))
             elif not img:
                 empty_image_list[image_id_src] = info['images'][image_id_src]

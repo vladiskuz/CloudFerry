@@ -19,7 +19,7 @@ from fabric.api import local
 from tests import test
 
 
-class forward_agentTestCase(test.TestCase):
+class ForwardAgentTestCase(test.TestCase):
 
     @mock.patch('cloudferrylib.utils.utils.local')
     def test_agent_is_already_run_w_keys(self, test_local):
@@ -28,7 +28,7 @@ class forward_agentTestCase(test.TestCase):
             "echo test_session_num test_fingerprint test_key_2 test_type\n",
             capture=True
         )
-        fa = utils.forward_agent(['test_key_1', 'test_key_2'])
+        fa = utils.ForwardAgent(['test_key_1', 'test_key_2'])
 
         self.assertTrue(fa._agent_already_running())
 
@@ -38,7 +38,7 @@ class forward_agentTestCase(test.TestCase):
             "echo The agent has no identities.",
             capture=True
         )
-        fa = utils.forward_agent(['test_key_1', 'test_key_2'])
+        fa = utils.ForwardAgent(['test_key_1', 'test_key_2'])
 
         self.assertFalse(fa._agent_already_running())
 
@@ -48,6 +48,6 @@ class forward_agentTestCase(test.TestCase):
             "echo test_session_num test_fingerprint test_key test_type\n",
             capture=True
         )
-        fa = utils.forward_agent(['test_key_1', 'test_key_2'])
+        fa = utils.ForwardAgent(['test_key_1', 'test_key_2'])
 
         self.assertFalse(fa._agent_already_running())

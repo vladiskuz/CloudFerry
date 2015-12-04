@@ -21,7 +21,6 @@ from fabric.api import settings
 
 from cloudferrylib.base.action import action
 from cloudferrylib.os.actions import task_transfer
-from cloudferrylib.utils.utils import forward_agent
 from cloudferrylib.utils import utils as utl
 
 
@@ -90,7 +89,7 @@ class TransportEphemeral(action.Action):
                                       host_instance):
         with settings(host_string=host_cloud,
                       connection_attempts=env.connection_attempts):
-            with forward_agent(env.key_filename):
+            with utl.ForwardAgent(env.key_filename):
                 run("ssh -oStrictHostKeyChecking=no %s  'rm -rf %s'" %
                     (host_instance, path_file))
 

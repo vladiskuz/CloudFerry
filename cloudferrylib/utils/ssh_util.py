@@ -15,7 +15,7 @@
 from cloudferrylib.utils import remote_runner
 
 import cmd_cfg
-from utils import forward_agent
+import utils
 
 
 class SshUtil(object):
@@ -39,5 +39,5 @@ class SshUtil(object):
             return runner.run(str(cmd))
 
     def execute_on_inthost(self, runner, cmd, host):
-        with forward_agent(self.config_migrate.key_filename):
+        with utils.ForwardAgent(self.config_migrate.key_filename):
             return runner.run(str(cmd_cfg.ssh_cmd(host, str(cmd))))

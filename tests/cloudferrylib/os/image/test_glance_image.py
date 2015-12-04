@@ -23,17 +23,17 @@ from cloudferrylib.utils import utils
 from tests import test
 
 
-FAKE_CONFIG = utils.ext_dict(cloud=utils.ext_dict({'user': 'fake_user',
-                                                   'password': 'fake_password',
-                                                   'tenant': 'fake_tenant',
-                                                   'region': None,
-                                                   'host': '1.1.1.1',
-                                                   'ssh_user': 'fake_user',
-                                                   'cacert': '',
-                                                   'insecure': False
-                                                   }),
-                             migrate=utils.ext_dict({'retry': '7',
-                                                     'time_wait': 5}))
+FAKE_CONFIG = utils.ExtDict(cloud=utils.ExtDict({'user': 'fake_user',
+                                                 'password': 'fake_password',
+                                                 'tenant': 'fake_tenant',
+                                                 'region': None,
+                                                 'host': '1.1.1.1',
+                                                 'ssh_user': 'fake_user',
+                                                 'cacert': '',
+                                                 'insecure': False
+                                                 }),
+                            migrate=utils.ExtDict({'retry': '7',
+                                                   'time_wait': 5}))
 
 
 class FakeUser(object):

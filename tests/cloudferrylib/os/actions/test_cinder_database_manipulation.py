@@ -93,22 +93,22 @@ def mount_dirs(_, vt=None):
 
 
 def _action(fake_src_data, fake_dst_data):
-    fake_config = utils.ext_dict(
-        migrate=utils.ext_dict({
+    fake_config = utils.ExtDict(
+        migrate=utils.ExtDict({
             'ssh_connection_attempts': 3,
             'key_filename': 'key_filename',
         }),
-        src=utils.ext_dict({'ssh_user': 'src_user',
+        src=utils.ExtDict({'ssh_user': 'src_user',
                             'ssh_sudo_password': 'src_passwd',
                             'host': SRC_CINDER_HOST,
                             }),
-        dst=utils.ext_dict({'ssh_user': 'dst_user',
+        dst=utils.ExtDict({'ssh_user': 'dst_user',
                             'ssh_sudo_password': 'dst_passwd',
                             'host': DST_CINDER_HOST,
                             'conf': '/etc/cinder.conf',
                             }),
-        src_storage=utils.ext_dict({'conf': '/etc/cinder.conf'}),
-        dst_storage=utils.ext_dict({'conf': '/etc/cinder.conf'}),
+        src_storage=utils.ExtDict({'conf': '/etc/cinder.conf'}),
+        dst_storage=utils.ExtDict({'conf': '/etc/cinder.conf'}),
     )
 
     fake_src_cloud = mock.Mock()

@@ -26,19 +26,19 @@ from cloudferrylib.utils import utils
 from tests import test
 
 
-FAKE_CONFIG = utils.ext_dict(
-    cloud=utils.ext_dict({'user': 'fake_user',
-                          'password': 'fake_password',
-                          'tenant': 'fake_tenant',
-                          'auth_url': 'http://1.1.1.1:35357/v2.0/',
-                          'region': None,
-                          'service_tenant': 'services',
-                          'cacert': '',
-                          'insecure': False}),
-    migrate=utils.ext_dict({'ext_net_map': 'fake_ext_net_map.yaml',
-                            'retry': '7',
-                            'time_wait': 5}),
-    network=utils.ext_dict({
+FAKE_CONFIG = utils.ExtDict(
+    cloud=utils.ExtDict({'user': 'fake_user',
+                         'password': 'fake_password',
+                         'tenant': 'fake_tenant',
+                         'auth_url': 'http://1.1.1.1:35357/v2.0/',
+                         'region': None,
+                         'service_tenant': 'services',
+                         'cacert': '',
+                         'insecure': False}),
+    migrate=utils.ExtDict({'ext_net_map': 'fake_ext_net_map.yaml',
+                           'retry': '7',
+                           'time_wait': 5}),
+    network=utils.ExtDict({
         'get_all_quota': True
     }))
 

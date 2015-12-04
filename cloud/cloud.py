@@ -42,14 +42,14 @@ class Cloud(object):
 
     @staticmethod
     def make_cloud_config(config, position):
-        cloud_config = utils.ext_dict(migrate=utils.ext_dict(),
-                                      cloud=utils.ext_dict(),
-                                      import_rules=utils.ext_dict(),
-                                      mail=utils.ext_dict(),
-                                      snapshot=utils.ext_dict(),
-                                      mysql=utils.ext_dict(),
-                                      rabbit=utils.ext_dict(),
-                                      initial_check=utils.ext_dict())
+        cloud_config = utils.ExtDict(migrate=utils.ExtDict(),
+                                     cloud=utils.ExtDict(),
+                                     import_rules=utils.ExtDict(),
+                                     mail=utils.ExtDict(),
+                                     snapshot=utils.ExtDict(),
+                                     mysql=utils.ExtDict(),
+                                     rabbit=utils.ExtDict(),
+                                     initial_check=utils.ExtDict())
 
         cloud_config['migrate'].update(config.migrate)
         cloud_config['cloud'].update(getattr(config, position))
@@ -65,7 +65,7 @@ class Cloud(object):
     @staticmethod
     def make_resource_config(config, position, cloud_config, resource_name):
         resource_config = copy.deepcopy(cloud_config)
-        resource_config[resource_name] = utils.ext_dict()
+        resource_config[resource_name] = utils.ExtDict()
         for k, v in getattr(config,
                             '%s_%s' % (position, resource_name)).iteritems():
             resource_config[resource_name][k] = v

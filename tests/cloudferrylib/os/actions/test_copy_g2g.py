@@ -35,7 +35,7 @@ class CopyFromGlanceToGlanceTestCase(test.TestCase):
         self.dst_cloud = mock.Mock()
         self.dst_cloud.resources = {'image': self.fake_image}
 
-        self.fake_config = utils.ext_dict(migrate=utils.ext_dict(
+        self.fake_config = utils.ExtDict(migrate=utils.ExtDict(
             {'ignore_empty_images': False}))
         self.src_cloud.resources = {'image': self.fake_image}
 

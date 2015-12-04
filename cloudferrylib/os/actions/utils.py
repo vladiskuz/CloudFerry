@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
-from cloudferrylib.utils import utils
-from fabric.api import run, settings, env
 import copy
-from cloudferrylib.utils import utils as utl
+
+from fabric.api import env
+from fabric.api import run
+from fabric.api import settings
+
+from cloudferrylib.utils import utils
+
 
 LOG = utils.get_log(__name__)
 
@@ -33,7 +37,7 @@ def transfer_file_to_file(src_cloud,
     ssh_ip_dst = dst_cloud.getIpSsh()
     with settings(host_string=ssh_ip_src,
                   connection_attempts=env.connection_attempts):
-        with utils.forward_agent(cfg_migrate.key_filename):
+        with utils.ForwardAgent(cfg_migrate.key_filename):
             with utils.up_ssh_tunnel(host_dst, ssh_ip_dst, ssh_ip_src) as port:
                 if cfg_migrate.file_compression == "dd":
                     run(("ssh -oStrictHostKeyChecking=no %s 'dd bs=1M " +
@@ -52,7 +56,7 @@ def transfer_file_to_file(src_cloud,
 def delete_file_from_rbd(ssh_ip, file_path):
     with settings(host_string=ssh_ip,
                   connection_attempts=env.connection_attempts):
-        with utils.forward_agent(env.key_filename):
+        with utils.ForwardAgent(env.key_filename):
             run("rbd rm %s" % file_path)
 
 
@@ -71,7 +75,7 @@ def require_methods(methods, obj):
 
 
 def select_boot_volume(info):
-    for k, v in info[utl.STORAGE_RESOURCE][utl.VOLUMES_TYPE].iteritems():
+    for k, v in info[utils.STORAGE_RESOURCE][utils.VOLUMES_TYPE].iteritems():
         if not((v['num_device'] == 0) and v['bootable']):
-            del info[utl.STORAGE_RESOURCE][utl.VOLUMES_TYPE][k]
+            del info[utils.STORAGE_RESOURCE][utils.VOLUMES_TYPE][k]
     return info

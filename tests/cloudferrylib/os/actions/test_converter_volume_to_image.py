@@ -54,7 +54,7 @@ class ConverterVolumeToImageTest(test.TestCase):
         }
 
         self.fake_dst_cloud = mock.Mock()
-        self.fake_config = utils.ext_dict(migrate=utils.ext_dict(
+        self.fake_config = utils.ExtDict(migrate=utils.ExtDict(
             {'disk_format': 'qcow',
              'container_format': 'bare'}))
 

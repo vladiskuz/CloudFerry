@@ -26,18 +26,18 @@ from cloudferrylib.utils import utils
 from tests import test
 
 
-FAKE_CONFIG = utils.ext_dict(
-    cloud=utils.ext_dict({'user': 'fake_user',
-                          'password': 'fake_password',
-                          'tenant': 'fake_tenant',
-                          'region': None,
-                          'auth_url': 'http://1.1.1.1:35357/v2.0/',
-                          'cacert': '',
-                          'insecure': False}),
-    mysql=utils.ext_dict({'host': '1.1.1.1'}),
-    migrate=utils.ext_dict({'migrate_quotas': True,
-                            'retry': '7',
-                            'time_wait': 5}))
+FAKE_CONFIG = utils.ExtDict(
+    cloud=utils.ExtDict({'user': 'fake_user',
+                         'password': 'fake_password',
+                         'tenant': 'fake_tenant',
+                         'region': None,
+                         'auth_url': 'http://1.1.1.1:35357/v2.0/',
+                         'cacert': '',
+                         'insecure': False}),
+    mysql=utils.ExtDict({'host': '1.1.1.1'}),
+    migrate=utils.ExtDict({'migrate_quotas': True,
+                           'retry': '7',
+                           'time_wait': 5}))
 
 
 class NovaComputeTestCase(test.TestCase):

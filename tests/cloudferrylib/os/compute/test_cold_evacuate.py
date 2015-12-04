@@ -24,14 +24,14 @@ from tests import test
 
 
 class ColdEvacuateTestCase(test.TestCase):
-    config = utils.ext_dict(
-        cloud=utils.ext_dict(
+    config = utils.ExtDict(
+        cloud=utils.ExtDict(
             ssh_user='ssh_user',
             ssh_sudo_password='ssh_sudo_password',
             ssh_host='ssh_host',
             host='host',
         ),
-        migrate=utils.ext_dict(
+        migrate=utils.ExtDict(
             ssh_chunk_size=1337,
             retry=42,
         ),

@@ -33,7 +33,7 @@ class SSHCephToCeph(driver_transporter.DriverTransporter):
                     else self.dst_cloud.getIpSsh())
         with (settings(host_string=host_src,
                        connection_attempts=env.connection_attempts),
-              utils.forward_agent(env.key_filename)):
+              utils.ForwardAgent(env.key_filename)):
 
             rbd_import_diff = rbd_util.RbdUtil.rbd_import_diff_cmd
             ssh_cmd = cmd_cfg.ssh_cmd

@@ -1,9 +1,11 @@
 # FIXME code below is not tested functionally. Should be considered dead
 
-from fabric.api import run, settings, env
+from fabric.api import env
+from fabric.api import run
+from fabric.api import settings
+
 from cloudferrylib.base import image
 from cloudferrylib.base.action import action
-from cloudferrylib.utils.utils import forward_agent
 from cloudferrylib.utils import utils as utl
 
 INSTANCES = 'instances'
@@ -31,7 +33,7 @@ class LoadComputeImageToFile(action.Action):
 
             with settings(host_string=cfg.host,
                           connection_attempts=ssh_attempts):
-                with forward_agent(env.key_filename):
+                with utl.ForwardAgent(env.key_filename):
                     cmd = image.glance_image_download_cmd(cfg, image_id,
                                                           base_file)
                     run(cmd)
