@@ -24,14 +24,14 @@ from cloudferrylib.utils import utils
 from tests import test
 
 
-FAKE_CONFIG = utils.ext_dict(
-    cloud=utils.ext_dict({'user': 'fake_user',
-                          'password': 'fake_password',
-                          'tenant': 'fake_tenant',
-                          'host': '1.1.1.1',
-                          'auth_url': 'http://1.1.1.1:35357/v2.0/'}),
-    mysql=utils.ext_dict({'db_host': '1.1.1.1'}),
-    migrate=utils.ext_dict({
+FAKE_CONFIG = utils.ExtDict(
+    cloud=utils.ExtDict({'user': 'fake_user',
+                         'password': 'fake_password',
+                         'tenant': 'fake_tenant',
+                         'host': '1.1.1.1',
+                         'auth_url': 'http://1.1.1.1:35357/v2.0/'}),
+    mysql=utils.ExtDict({'db_host': '1.1.1.1'}),
+    migrate=utils.ExtDict({
         'retry': '7',
         'time_wait': 5}))
 

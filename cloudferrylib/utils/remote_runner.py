@@ -17,7 +17,7 @@ from fabric.api import run
 from fabric.api import settings
 
 import cfglib
-from cloudferrylib.utils.utils import forward_agent
+from cloudferrylib.utils.utils import ForwardAgent
 from cloudferrylib.utils import utils
 
 LOG = utils.get_log(__name__)
@@ -57,7 +57,7 @@ class RemoteRunner(object):
                       reject_unkown_hosts=False,
                       combine_stderr=False,
                       connection_attempts=ssh_attempts):
-            with forward_agent(self.key):
+            with ForwardAgent(self.key):
                 LOG.debug("running '%s' on '%s' host as user '%s'",
                           cmd, self.host, self.user)
                 if self.sudo and self.user != 'root':

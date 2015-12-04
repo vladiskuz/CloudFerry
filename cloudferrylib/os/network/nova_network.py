@@ -21,7 +21,7 @@ from novaclient.v1_1 import client as nova_client
 
 from cloudferrylib.base import network
 from cloudferrylib.os.compute import nova_compute
-from cloudferrylib.utils.utils import forward_agent
+from cloudferrylib.utils import utils
 
 
 class NovaNetwork(network.Network):
@@ -96,7 +96,7 @@ class NovaNetwork(network.Network):
 
         with settings(host_string=self.config['host'],
                       connection_attempts=ssh_attempts):
-            with forward_agent(env.key_filename):
+            with utils.ForwardAgent(env.key_filename):
                 cmd = "virsh dumpxml %s | grep 'mac address' | " \
                       "cut -d\\' -f2" % libvirt_name
                 out = run("ssh -oStrictHostKeyChecking=no %s %s" %

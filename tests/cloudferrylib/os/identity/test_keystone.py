@@ -26,22 +26,22 @@ from cloudferrylib.utils import utils
 from tests import test
 
 
-FAKE_CONFIG = utils.ext_dict(
-    cloud=utils.ext_dict({'user': 'fake_user',
-                          'password': 'fake_password',
-                          'tenant': 'fake_tenant',
-                          'auth_url': 'http://1.1.1.1:35357/v2.0/',
-                          'region': None,
-                          'service_tenant': 'service',
-                          'cacert': '',
-                          'insecure': False}),
-    migrate=utils.ext_dict({'retry': '7',
-                            'time_wait': 5,
-                            'keep_user_passwords': False,
-                            'overwrite_user_passwords': False,
-                            'migrate_users': True,
-                            'optimize_user_role_fetch': False}),
-    mail=utils.ext_dict({'server': '-'}))
+FAKE_CONFIG = utils.ExtDict(
+    cloud=utils.ExtDict({'user': 'fake_user',
+                         'password': 'fake_password',
+                         'tenant': 'fake_tenant',
+                         'auth_url': 'http://1.1.1.1:35357/v2.0/',
+                         'region': None,
+                         'service_tenant': 'service',
+                         'cacert': '',
+                         'insecure': False}),
+    migrate=utils.ExtDict({'retry': '7',
+                           'time_wait': 5,
+                           'keep_user_passwords': False,
+                           'overwrite_user_passwords': False,
+                           'migrate_users': True,
+                           'optimize_user_role_fetch': False}),
+    mail=utils.ExtDict({'server': '-'}))
 
 
 @mock.patch("cloudferrylib.base.clients", mock.MagicMock())

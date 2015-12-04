@@ -12,191 +12,112 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
+from email.mime import multipart
+from email.mime import text
 import logging
+from logging import config
+import multiprocessing
+import os
+import pkg_resources
+import random
+import smtplib
+import string
 import time
 import timeit
-import random
-import string
-import smtplib
-import os.path
-from pkg_resources import Requirement, resource_filename
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from functools import wraps
-import json
-from jinja2 import Environment, FileSystemLoader
-import os
-import inspect
-from multiprocessing import Lock
-from fabric.api import run, settings, local, env, sudo
+
+from fabric.api import env
+from fabric.api import local
+from fabric.api import run
+from fabric.api import settings
+from fabric.api import sudo
 from fabric.context_managers import hide
 import ipaddr
 import yaml
-from logging import config
 
 
-ISCSI = "iscsi"
-CEPH = "ceph"
-BOOT_FROM_VOLUME = "boot_volume"
-BOOT_FROM_IMAGE = "boot_image"
 ANY = "any"
-NO = "no"
+AVAILABLE = 'available'
+
+BOOT_FROM_IMAGE = "boot_image"
+BOOT_FROM_VOLUME = "boot_volume"
+
+CEPH = "ceph"
+COMPUTE_RESOURCE = 'compute'
+CONTAINERS = 'containers'
+
+DIFF_BODY = 'diff'
+DISK = "disk"
+DISK_EPHEM = "disk.local"
+
 EPHEMERAL = "ephemeral"
-REMOTE_FILE = "remote file"
-QCOW2 = "qcow2"
-RAW = "raw"
-YES = "yes"
+EPHEMERAL_BODY = 'ephemeral'
+
+HOST_DST = 'host_dst'
+HOST_SRC = 'host_src'
+
+IDENTITY_RESOURCE = 'identity'
+IGNORE = 'ignore'
+IMAGE_BODY = 'image'
+IMAGE_RESOURCE = 'image'
+IMAGES_TYPE = 'images'
+IN_USE = 'in-use'
+INSTANCE_BODY = 'instance'
+INSTANCES_TYPE = 'instances'
+INTERFACES = 'interfaces'
+ISCSI = "iscsi"
+
+LEN_UUID_INSTANCE = 36
 # Use configs/logging_config.yaml as logging config in current folder
 # otherwise will use config from CloudFerry package.
 LOGGING_CONFIG = ('configs/logging_config.yaml'
                   if os.path.isfile('configs/logging_config.yaml') else
-                  resource_filename(Requirement.parse("CloudFerry"),
-                                    'configs/logging_config.yaml'))
-PATH_TO_SNAPSHOTS = 'snapshots'
-AVAILABLE = 'available'
-IN_USE = 'in-use'
-STATUS = 'status'
-
-DISK = "disk"
-DISK_EPHEM = "disk.local"
-LEN_UUID_INSTANCE = 36
-
-HOST_SRC = 'host_src'
-HOST_DST = 'host_dst'
-PATH_SRC = 'path_src'
-PATH_DST = 'path_dst'
-
-STORAGE_RESOURCE = 'storage'
-VOLUMES_TYPE = 'volumes'
-VOLUME_BODY = 'volume'
-VOLUMES_DB = 'volumes_db'
-SNAPSHOTS = 'snapshots'
-
-OBJSTORAGE_RESOURCE = 'objstorage'
-CONTAINERS = 'containers'
-
-COMPUTE_RESOURCE = 'compute'
-INSTANCES_TYPE = 'instances'
-INSTANCE_BODY = 'instance'
-
-NETWORK_RESOURCE = 'network'
-NETWORKS_TYPE = 'networks'
-NETWORK_BODY = 'network'
-
-DIFF_BODY = 'diff'
-EPHEMERAL_BODY = 'ephemeral'
-
-INTERFACES = 'interfaces'
-
-IMAGE_RESOURCE = 'image'
-IMAGES_TYPE = 'images'
-IMAGE_BODY = 'image'
-
-IDENTITY_RESOURCE = 'identity'
-TENANTS_TYPE = 'tenants'
-IGNORE = 'ignore'
+                  pkg_resources.resource_filename(
+                      pkg_resources.Requirement.parse("CloudFerry"),
+                      'configs/logging_config.yaml'))
 
 META_INFO = 'meta'
+
+NETWORK_RESOURCE = 'network'
+NO = "no"
+
+OBJSTORAGE_RESOURCE = 'objstorage'
 OLD_ID = 'old_id'
 
-FILTER_PATH = 'configs/filter.yaml'
+PATH_DST = 'path_dst'
+PATH_SRC = 'path_src'
 
-up_ssh_tunnel = None
+QCOW2 = "qcow2"
+
+RAW = "raw"
 
 SSH_CMD = \
     "ssh -oStrictHostKeyChecking=no -L %s:%s:22 -R %s:localhost:%s %s -Nf"
+STATUS = 'status'
+STORAGE_RESOURCE = 'storage'
+
+TENANTS_TYPE = 'tenants'
+
+VOLUMES_TYPE = 'volumes'
+VOLUME_BODY = 'volume'
+VOLUMES_DB = 'volumes_db'
+
+YES = "yes"
 
 
-class ext_dict(dict):
+up_ssh_tunnel = None
+
+
+class ExtDict(dict):
     def __getattr__(self, name):
         if name in self:
             return self[name]
         raise AttributeError("Exporter has no attribute %s" % name)
 
 
-def get_snapshots_list_repository(path=PATH_TO_SNAPSHOTS):
-    path_source = path + '/source'
-    path_dest = path + '/dest'
-    s = os.listdir(path_source)
-    s.sort()
-    source = [{'path': '%s/%s' % (path_source, f),
-               'timestamp': f.replace(".snapshot", "")} for f in s]
-    d = os.listdir(path_dest)
-    d.sort()
-    dest = [{'path': '%s/%s' % (path_dest, f),
-             'timestamp': f.replace(".snapshot", "")} for f in d]
-    return {
-        'source': source,
-        'dest': dest
-    }
-
-
-def dump_to_file(path, snapshot):
-    with open(path, "w+") as f:
-        json.dump(convert_to_dict(snapshot), f)
-
-
-def load_json_from_file(file_path):
-    f = open(file_path, 'r')
-    return json.load(f)
-
 primitive = [int, long, bool, float, type(None), str, unicode]
 
 
-def convert_to_dict(obj, ident=0, limit_ident=6):
-    ident += 1
-    if type(obj) in primitive:
-        return obj
-    if isinstance(obj, inspect.types.InstanceType) or \
-            (type(obj) not in (list, tuple, dict)):
-        if ident <= limit_ident:
-            try:
-                obj = obj.convert_to_dict()
-            except AttributeError:
-                try:
-                    t = obj.__dict__
-                    t['_type_class'] = str(obj.__class__)
-                    obj = t
-                except AttributeError:
-                    return str(obj.__class__ if hasattr(obj, '__class__')
-                               else type(obj))
-        else:
-            return str(obj.__class__ if hasattr(obj, '__class__')
-                       else type(obj))
-    if type(obj) is dict:
-        res = {}
-        for item in obj:
-            if ident <= limit_ident:
-                res[item] = convert_to_dict(obj[item], ident)
-            else:
-                res[item] = str(obj[item])
-        return res
-    if type(obj) in (list, tuple):
-        res = []
-        for item in obj:
-            if ident <= limit_ident:
-                res.append(convert_to_dict(item, ident))
-            else:
-                res.append(str(item))
-        return res if type(obj) is list else tuple(res)
-
-
-def convert_to_obj(obj, restore_object, namespace):
-    if type(obj) in primitive:
-        return obj
-    if type(obj) is dict:
-        for item in obj:
-            obj[item] = convert_to_obj(obj[item], restore_object, namespace)
-        obj = restore_object.restore(obj, namespace)
-    if type(obj) in (list, tuple):
-        res = []
-        for item in obj:
-            res.append(convert_to_obj(item, restore_object, namespace))
-        obj = res if type(obj) is list else tuple(res)
-    return obj
-
-
-class GeneratorPassword:
+class GeneratorPassword(object):
     def __init__(self, length=7):
         self.length = length
         self.chars = string.ascii_letters + string.digits + '@#$%&*'
@@ -208,7 +129,7 @@ class GeneratorPassword:
         return ''.join(random.choice(self.chars) for i in range(self.length))
 
 
-class Postman:
+class Postman(object):
     def __init__(self, username, password, from_addr, mail_server):
         self.username = username
         self.password = password
@@ -226,8 +147,8 @@ class Postman:
         self.server.quit()
 
     def send(self, to, subject, msg):
-        msg_mime = MIMEMultipart('alternative')
-        msg_mime.attach(MIMEText(msg, 'html'))
+        msg_mime = multipart.MIMEMultipart('alternative')
+        msg_mime.attach(text.MIMEText(msg, 'html'))
         msg_mime['Subject'] = subject
         msg_mime['From'] = self.from_addr
         msg_mime['To'] = to
@@ -237,7 +158,7 @@ class Postman:
         self.server.quit()
 
 
-class Templater:
+class Templater(object):
     def render(self, name_file, args):
         temp_file = open(name_file, 'r')
         temp_render = temp_file.read()
@@ -261,62 +182,9 @@ def get_log(name):
     return LOGGER
 
 
-class StackCallFunctions(object):
-    def __init__(self):
-        self.stack_call_functions = []
-        self.listeners = []
-
-    def trigger(self, name_event):
-        for listener in self.listeners:
-            {
-                'func_enter': listener.func_enter,
-                'func_exit': listener.func_exit
-            }[name_event](self)
-
-    def append(self, func_name, args, kwargs):
-        self.stack_call_functions.append({
-            'func_name': func_name,
-            'args': args,
-            'kwargs': kwargs
-        })
-        self.trigger('func_enter')
-
-    def depth(self):
-        return len(self.stack_call_functions)
-
-    def pop(self, res):
-        self.stack_call_functions[-1]['result'] = res
-        self.trigger('func_exit')
-        self.stack_call_functions.pop()
-
-    def addListener(self, listener):
-        self.listeners.insert(0, listener)
-
-    def removeListenerLast(self):
-        self.listeners = self.listeners[1:]
-
-
-stack_call_functions = StackCallFunctions()
-
-
-def log_step(log):
-    def decorator(func):
-        @wraps(func)
-        def inner(*args, **kwargs):
-            stack_call_functions.append(func.__name__, args, kwargs)
-            log.info("%s> Step %s" % ("- - " * stack_call_functions.depth(),
-                                      func.__name__))
-            res = func(*args, **kwargs)
-            stack_call_functions.pop(res)
-            return res
-        return inner
-    return decorator
-
-
-class forward_agent(object):
-    """
-        Forwarding ssh-key for access on to source and
-        destination clouds via ssh
+class ForwardAgent(object):
+    """Forwarding ssh-key for access on to source and
+       destination clouds via ssh.
     """
 
     def __init__(self, key_files):
@@ -359,9 +227,11 @@ class forward_agent(object):
         pass
 
 
-class wrapper_singletone_ssh_tunnel:
+class WrapperSingletoneSshTunnel(object):
 
-    def __init__(self, interval_ssh="9000-9999", locker=Lock()):
+    def __init__(self,
+                 interval_ssh="9000-9999",
+                 locker=multiprocessing.Lock()):
         self.interval_ssh = [int(interval_ssh.split('-')[0]),
                              int(interval_ssh.split('-')[1])]
         self.busy_port = []
@@ -392,11 +262,8 @@ class wrapper_singletone_ssh_tunnel:
                                 self.free_port)
 
 
-class UpSshTunnelClass:
-
-    """
-        Up ssh tunnel on dest controller node for transferring data
-    """
+class UpSshTunnelClass(object):
+    """Up ssh tunniel on dest controller node for transferring data."""
 
     def __init__(self, address_dest_compute, address_dest_controller, host,
                  callback_get, callback_free):
@@ -431,29 +298,6 @@ class UpSshTunnelClass:
         self.remove_port(self.port)
 
 
-class ChecksumImageInvalid(Exception):
-    def __init__(self, checksum_source, checksum_dest):
-        self.checksum_source = checksum_source
-        self.checksum_dest = checksum_dest
-
-    def __str__(self):
-        return repr("Checksum of image source = %s" +
-                    "Checksum of image dest = %s" %
-                    (self.checksum_source, self.checksum_dest))
-
-
-def render_info(info_values, template_path="templates",
-                template_file="info.html"):
-    info_env = Environment(loader=FileSystemLoader(template_path))
-    template = info_env.get_template(template_file)
-    return template.render(info_values)
-
-
-def write_info(rendered_info, info_file="source_info.html"):
-    with open(info_file, "wb") as ifile:
-        ifile.write(rendered_info)
-
-
 def libvirt_instance_exists(libvirt_name, init_host, compute_host, ssh_user,
                             ssh_sudo_password):
     with settings(host_string=compute_host,
@@ -486,7 +330,7 @@ def find_element_by_in(list_values, word):
 
 
 def init_singletones(cfg):
-    globals()['up_ssh_tunnel'] = wrapper_singletone_ssh_tunnel(
+    globals()['up_ssh_tunnel'] = WrapperSingletoneSshTunnel(
         cfg.migrate.ssh_transfer_port)
 
 
@@ -560,7 +404,9 @@ def timer(func, *args, **kwargs):
 def import_class_by_string(name):
     """ This function takes string in format
         'cloudferrylib.os.storage.cinder_storage.CinderStorage'
-        And returns class object"""
+        And returns class object.
+    """
+
     module, class_name = name.split('.')[:-1], name.split('.')[-1]
     mod = __import__(".".join(module))
     for comp in module[1:]:

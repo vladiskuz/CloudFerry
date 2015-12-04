@@ -31,7 +31,7 @@ class SSHFileToFile(driver_transporter.DriverTransporter):
         LOG.debug("| | copy file")
         ssh_ip_src = self.src_cloud.getIpSsh()
         ssh_ip_dst = self.dst_cloud.getIpSsh()
-        with utils.forward_agent(self.cfg.migrate.key_filename), \
+        with utils.ForwardAgent(self.cfg.migrate.key_filename), \
                 utils.up_ssh_tunnel(data['host_dst'],
                                     ssh_ip_dst,
                                     ssh_ip_src) as port:
@@ -78,7 +78,7 @@ class SSHFileToFile(driver_transporter.DriverTransporter):
                          "cloudferrylib/utils/drivers/.")
         with (settings(host_string=data['host_src'],
                        connection_attempts=ssh_attempts),
-              utils.forward_agent(self.cfg.migrate.key_filename)):
+              utils.ForwardAgent(self.cfg.migrate.key_filename)):
             if self.cfg.migrate.file_compression == "dd":
                 dd_dst = cmd_cfg.dd_cmd_of
                 ssh_cmd_dst = cmd_cfg.ssh_cmd

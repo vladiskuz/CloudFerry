@@ -28,7 +28,6 @@ from cloudferrylib.utils.drivers import ssh_ceph_to_ceph
 from cloudferrylib.utils.drivers import ssh_ceph_to_file
 from cloudferrylib.utils.drivers import ssh_file_to_file
 from cloudferrylib.utils.drivers import ssh_file_to_ceph
-from cloudferrylib.utils.utils import forward_agent
 
 
 CLOUD = 'cloud'
@@ -189,7 +188,7 @@ class PreTransportInstance(action.Action):
     def convert_file_to_raw(host, disk_format, filepath):
         with settings(host_string=host,
                       connection_attempts=env.connection_attempts):
-            with forward_agent(env.key_filename):
+            with utl.ForwardAgent(env.key_filename):
                 run("qemu-img convert -f %s -O raw %s %s.tmp" %
                     (disk_format, filepath, filepath))
                 run("mv -f %s.tmp %s" % (filepath, filepath))

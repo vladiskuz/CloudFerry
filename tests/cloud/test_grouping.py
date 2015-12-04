@@ -28,12 +28,12 @@ from tests import test
 
 RESULT_FILE = 'tests/grouping_result'
 FILE_NAME = 'tests/groups'
-FAKE_CONFIG = utils.ext_dict(src=utils.ext_dict({'user': 'fake_user',
-                                                 'password': 'fake_password',
-                                                 'tenant': 'fake_tenant',
-                                                 'host': '1.1.1.1'}),
-                             migrate=utils.ext_dict(
-                                 {'group_file_path': RESULT_FILE}))
+FAKE_CONFIG = utils.ExtDict(src=utils.ExtDict({'user': 'fake_user',
+                                               'password': 'fake_password',
+                                               'tenant': 'fake_tenant',
+                                               'host': '1.1.1.1'}),
+                            migrate=utils.ExtDict(
+                                {'group_file_path': RESULT_FILE}))
 
 
 class GroupingTestCase(test.TestCase):

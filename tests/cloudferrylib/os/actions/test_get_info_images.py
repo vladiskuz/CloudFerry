@@ -31,7 +31,7 @@ class GetInfoImagesTestCase(test.TestCase):
         self.fake_image.read_info.return_value = self.fake_info
         self.fake_src_cloud = mock.Mock()
         self.fake_dst_cloud = mock.Mock()
-        self.fake_config = utils.ext_dict(migrate=utils.ext_dict(
+        self.fake_config = utils.ExtDict(migrate=utils.ExtDict(
             {'ignore_empty_images': False}))
         self.fake_src_cloud.resources = {'image': self.fake_image}
 

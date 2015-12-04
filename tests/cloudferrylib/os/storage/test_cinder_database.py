@@ -41,24 +41,24 @@ def tn_name_by_id(uuid, _):
         if tn['id'] == uuid:
             return tn['name']
 
-FAKE_CONFIG = utils.ext_dict(
-    cloud=utils.ext_dict({'user': 'fake_user',
-                          'password': 'fake_password',
-                          'tenant': 'fake_tenant',
-                          'host': '1.1.1.1',
-                          'auth_url': 'http://1.1.1.1:35357/v2.0/',
-                          'cacert': '',
-                          'insecure': False}),
-    migrate=utils.ext_dict({'speed_limit': '10MB',
-                            'retry': '7',
-                            'time_wait': 5,
-                            'keep_volume_storage': False,
-                            'keep_volume_snapshots': False}),
-    mysql=utils.ext_dict({'db_host': '1.1.1.1'}),
-    storage=utils.ext_dict({'backend': 'ceph',
-                            'rbd_pool': 'volumes',
-                            'volume_name_template': 'volume-',
-                            'host': '1.1.1.1'}))
+FAKE_CONFIG = utils.ExtDict(
+    cloud=utils.ExtDict({'user': 'fake_user',
+                         'password': 'fake_password',
+                         'tenant': 'fake_tenant',
+                         'host': '1.1.1.1',
+                         'auth_url': 'http://1.1.1.1:35357/v2.0/',
+                         'cacert': '',
+                         'insecure': False}),
+    migrate=utils.ExtDict({'speed_limit': '10MB',
+                           'retry': '7',
+                           'time_wait': 5,
+                           'keep_volume_storage': False,
+                           'keep_volume_snapshots': False}),
+    mysql=utils.ExtDict({'db_host': '1.1.1.1'}),
+    storage=utils.ExtDict({'backend': 'ceph',
+                           'rbd_pool': 'volumes',
+                           'volume_name_template': 'volume-',
+                           'host': '1.1.1.1'}))
 
 
 STATUSES = (

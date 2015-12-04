@@ -23,23 +23,23 @@ from cloudferrylib.utils import utils
 from tests import test
 
 
-FAKE_CONFIG = utils.ext_dict(
-    cloud=utils.ext_dict({'user': 'fake_user',
-                          'password': 'fake_password',
-                          'tenant': 'fake_tenant',
-                          'host': '1.1.1.1',
-                          'auth_url': 'http://1.1.1.1:35357/v2.0/',
-                          'cacert': '',
-                          'insecure': False}),
-    migrate=utils.ext_dict({'retry': '7',
-                            'time_wait': 5,
-                            'keep_volume_storage': False,
-                            'keep_volume_snapshots': False}),
-    mysql=utils.ext_dict({'db_host': '1.1.1.1'}),
-    storage=utils.ext_dict({'backend': 'ceph',
-                            'rbd_pool': 'volumes',
-                            'volume_name_template': 'volume-',
-                            'host': '1.1.1.1'}))
+FAKE_CONFIG = utils.ExtDict(
+    cloud=utils.ExtDict({'user': 'fake_user',
+                         'password': 'fake_password',
+                         'tenant': 'fake_tenant',
+                         'host': '1.1.1.1',
+                         'auth_url': 'http://1.1.1.1:35357/v2.0/',
+                         'cacert': '',
+                         'insecure': False}),
+    migrate=utils.ExtDict({'retry': '7',
+                           'time_wait': 5,
+                           'keep_volume_storage': False,
+                           'keep_volume_snapshots': False}),
+    mysql=utils.ExtDict({'db_host': '1.1.1.1'}),
+    storage=utils.ExtDict({'backend': 'ceph',
+                           'rbd_pool': 'volumes',
+                           'volume_name_template': 'volume-',
+                           'host': '1.1.1.1'}))
 
 
 class CinderStorageTestCase(test.TestCase):

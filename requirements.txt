@@ -7,7 +7,6 @@ debtcollector==0.3.0
 cliff==1.4.3
 fabric>=1.8.2
 ipaddr
-jinja2
 jsondate
 mysql-connector-python
 oslo.config==1.15.0
