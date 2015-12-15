@@ -11,19 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import cfglib
 import contextlib
-import time
 import os
+import time
 from Crypto.PublicKey import RSA
 
 from novaclient import exceptions as nova_exc
+from oslo_log import log
 
+import cfglib
 from cloudferrylib.utils import remote_runner
 from cloudferrylib.utils import timeout_exception
-from cloudferrylib.utils import utils
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 # How many times to take calling function successfully before giving up
 # by default

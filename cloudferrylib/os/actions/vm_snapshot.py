@@ -13,11 +13,13 @@
 # limitations under the License.
 
 
+from oslo_log import log
+
 from cloudferrylib.base.action import action
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 VM_STATUSES = "VM_STATUSES"
 
 

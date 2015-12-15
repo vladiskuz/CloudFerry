@@ -17,11 +17,12 @@ import copy
 from fabric.api import env
 from fabric.api import run
 from fabric.api import settings
+from oslo_log import log
 
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 def transfer_file_to_file(src_cloud,

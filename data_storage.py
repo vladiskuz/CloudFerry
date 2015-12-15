@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
-from cfglib import CONF
-from cloudferrylib.utils import utils
+from oslo_log import log
 
-LOG = utils.get_log(__name__)
+from cfglib import CONF
+
+LOG = log.getLogger(__name__)
 
 # we don't want to create connection to database on module import - so that
 # we will create it only on first database call

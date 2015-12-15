@@ -11,11 +11,13 @@
 # implied.
 # See the License for the specific language governing permissions and#
 # limitations under the License.
+from oslo_log import log
+
 from cloudferrylib.base.action import action
 from cloudferrylib.utils import utils as utl
 
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class CheckConfigQuotaNeutron(action.Action):

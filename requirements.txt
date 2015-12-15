@@ -9,8 +9,8 @@ fabric>=1.8.2
 ipaddr
 jsondate
 mysql-connector-python
-oslo.config==1.15.0
-oslo.utils==1.9.0
+oslo.config==2.3.0
+oslo.log==1.12.0
 pika==0.9.14
 progressbar==2.3
 pycrypto
@@ -18,7 +18,7 @@ python-cinderclient==1.1.0
 python-glanceclient==0.12.0
 python-keystoneclient==1.6.0
 python-neutronclient==2.3.4
-python-novaclient==2.20.0
+python-novaclient==2.29.0
 python-swiftclient==2.3.1
 pyyaml
 redis

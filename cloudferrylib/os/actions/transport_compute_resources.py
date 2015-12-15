@@ -13,13 +13,15 @@
 # limitations under the License.
 import copy
 
+from oslo_log import log
+
 from cloudferrylib.base.action import action
 from cloudferrylib.os.compute import keypairs
 from cloudferrylib.os.identity import keystone
 from cloudferrylib.utils import utils as utl
 
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class TransportComputeResources(action.Action):

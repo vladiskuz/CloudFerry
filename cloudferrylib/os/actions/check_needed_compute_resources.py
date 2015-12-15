@@ -19,9 +19,6 @@ from cloudferrylib.base import exception
 from cloudferrylib.utils import utils as utl
 
 
-LOG = utl.get_log(__name__)
-
-
 class CheckNeededComputeResources(action.Action):
     def run(self, **kwargs):
         info = kwargs['info']

@@ -15,14 +15,14 @@
 
 
 import jsondate
+from oslo_log import log
+
 from cinderclient.v1 import client as cinder_client
-from cloudferrylib.utils import utils as utl
 from cloudferrylib.os.storage import cinder_storage
 from cloudferrylib.os.storage import filters as cinder_filters
 from cloudferrylib.utils import filters
 
 CINDER_VOLUME = "cinder-volume"
-LOG = utl.get_log(__name__)
 ID = 'id'
 DISPLAY_NAME = 'display_name'
 PROJECT_ID = 'project_id'
@@ -42,6 +42,7 @@ QUOTA_TABLES = (
 # 'error_attaching']
 VALID_STATUSES = ['available', 'in-use', 'attaching', 'detaching']
 
+LOG = log.getLogger(__name__)
 
 def skip_invalid_status_volumes(volumes):
     """Filter volumes with valid status.

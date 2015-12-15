@@ -14,11 +14,8 @@
 
 from email.mime import multipart
 from email.mime import text
-import logging
-from logging import config
 import multiprocessing
 import os
-import pkg_resources
 import random
 import smtplib
 import string
@@ -67,13 +64,6 @@ INTERFACES = 'interfaces'
 ISCSI = "iscsi"
 
 LEN_UUID_INSTANCE = 36
-# Use configs/logging_config.yaml as logging config in current folder
-# otherwise will use config from CloudFerry package.
-LOGGING_CONFIG = ('configs/logging_config.yaml'
-                  if os.path.isfile('configs/logging_config.yaml') else
-                  pkg_resources.resource_filename(
-                      pkg_resources.Requirement.parse("CloudFerry"),
-                      'configs/logging_config.yaml'))
 
 META_INFO = 'meta'
 
@@ -166,20 +156,6 @@ class Templater(object):
             temp_render = temp_render.replace("{{%s}}" % arg, args[arg])
         temp_file.close()
         return temp_render
-
-with open(LOGGING_CONFIG, 'r') as logging_config:
-    # read config from file and store it as module global variable
-    config.dictConfig(yaml.load(logging_config))
-    LOGGER = logging.getLogger("CF")
-
-
-def configure_logging(level):
-    # redefine default logging level
-    LOGGER.setLevel(level)
-
-
-def get_log(name):
-    return LOGGER
 
 
 class ForwardAgent(object):

@@ -18,7 +18,6 @@ import copy
 from cloudferrylib.base.action import converter
 from cloudferrylib.utils import utils as utl
 
-LOG = utl.get_log(__name__)
 CEPH = 'ceph'
 ACTIVE = 'active'
 BARE = "bare"

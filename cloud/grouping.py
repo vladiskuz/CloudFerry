@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
+from oslo_log import log
 
 import cloud
 
@@ -21,7 +22,7 @@ from cloudferrylib.os.compute import nova_compute
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class Grouping(object):

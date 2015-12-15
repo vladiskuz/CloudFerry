@@ -21,9 +21,6 @@ from cloudferrylib.utils import rbd_util
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
-
-
 class SSHCephToFile(driver_transporter.DriverTransporter):
     def transfer(self, data):
         ssh_ip_src = self.src_cloud.getIpSsh()

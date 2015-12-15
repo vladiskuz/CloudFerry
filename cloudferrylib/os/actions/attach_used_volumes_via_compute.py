@@ -14,13 +14,14 @@
 
 import copy
 
+from cinderclient import exceptions as cinder_exceptions
+from oslo_log import log
+
 from cloudferrylib.base.action import action
 from cloudferrylib.utils import utils as utl
 
-from cinderclient.exceptions import NotFound
 
-
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class AttachVolumesCompute(action.Action):
@@ -35,7 +36,7 @@ class AttachVolumesCompute(action.Action):
             for vol in instance[utl.META_INFO][utl.VOLUME_BODY]:
                 try:
                     status = storage_res.get_status(vol['volume']['id'])
-                except NotFound:
+                except cinder_exceptions.NotFound:
                     LOG.error("Skipped volume %s: not found and not attached",
                               vol['volume']['id'])
                     continue

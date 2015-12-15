@@ -1,6 +1,5 @@
-from oslo.config import cfg
+from oslo_config import cfg
 
-__author__ = 'mirrorcoder'
 
 migrate = cfg.OptGroup(name='migrate',
                        title='Credetionals and general '

@@ -19,12 +19,13 @@ from a source cloud and deploying them into a destination cloud
 """
 
 
+from oslo_log import log
+
 from cloudferrylib.base.action import transporter
 from cloudferrylib.os.compute import server_groups
-from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class ServerGroupTransporter(transporter.Transporter):

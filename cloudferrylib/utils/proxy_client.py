@@ -11,10 +11,13 @@
 # implied.
 # See the License for the specific language governing permissions and#
 # limitations under the License.
-import time
 import inspect
-from cloudferrylib.utils import utils
-LOG = utils.get_log(__name__)
+import time
+
+from oslo_log import log
+
+LOG = log.getLogger(__name__)
+
 method_wrapper = type(object().__str__)
 
 base_types = [inspect.types.BooleanType,

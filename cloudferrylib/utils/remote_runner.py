@@ -15,12 +15,12 @@
 from fabric.api import sudo as fab_sudo
 from fabric.api import run
 from fabric.api import settings
+from oslo_log import log
 
 import cfglib
 from cloudferrylib.utils.utils import ForwardAgent
-from cloudferrylib.utils import utils
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class RemoteExecutionError(RuntimeError):

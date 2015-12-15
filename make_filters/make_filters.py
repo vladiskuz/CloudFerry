@@ -13,12 +13,15 @@
 # limitations under the License.
 
 
-import data_storage
 import json
-import yaml
 import os
-from cloudferrylib.utils import utils as utl
-LOG = utl.get_log(__name__)
+
+from oslo_log import log
+import yaml
+
+import data_storage
+
+LOG = log.getLogger(__name__)
 
 
 MIGRATE_VM_PREFIX = 'migrate_vm_'

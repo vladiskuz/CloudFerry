@@ -13,15 +13,17 @@
 # limitations under the License.
 
 
+import re
+
 from cinderclient.v1 import client as cinder_client
 from cinderclient import exceptions as cinder_exc
+from oslo_log import log
 
 from cloudferrylib.base import storage
 from cloudferrylib.utils import utils as utl
 
-import re
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 RE_EXTRACT_HOST = re.compile(r'//([^:^/]*)')
 

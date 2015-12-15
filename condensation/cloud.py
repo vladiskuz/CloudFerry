@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
-from condensation import group
-from condensation import flavor
+import fractions
+
+import prettytable
+from oslo_log import log
+
+import cfglib
 from condensation import action
+from condensation import flavor
+from condensation import group
 from condensation import node
 from condensation import vm
 
-import prettytable
-import fractions
-from cfglib import CONF
-from cloudferrylib.utils import utils
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class Cloud(object):
@@ -259,7 +261,7 @@ class Cloud(object):
             # if potentional utilization of node doesn't full the node
             # it means that we are done with approximation part
             # and we need to switch to accurate algorithm
-            if all([i < CONF.condense.precision for i in pot_util]):
+            if all([i < cfglib.CONF.condense.precision for i in pot_util]):
                 # recalculate for all spare nodes
                 return self.condense(True)
 
@@ -318,7 +320,7 @@ class Cloud(object):
             if not flavors_dict:
                 break
             fl_required = node_obj.calculate_flavors_required(flavors_dict)
-            if all([i < CONF.condense.precision for i in
+            if all([i < cfglib.CONF.condense.precision for i in
                     node_obj.potential_utilization(
                         fl_required)]):
                 fl_required = node_obj.calculate_flavors_required(

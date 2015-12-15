@@ -13,12 +13,12 @@
 # limitations under the License.
 from fabric.api import run
 from fabric.api import settings
+from oslo_log import log
 
 from cloudferrylib.base import clients
-from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 def update_user_ids_for_instance(db, instance_id, user_id):

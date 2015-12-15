@@ -13,12 +13,13 @@
 # limitations under the License.
 
 
-import pika
 import ast
 
 import keystoneclient
 from keystoneclient import exceptions as ks_exceptions
 from keystoneclient.v2_0 import client as keystone_client
+from oslo_log import log
+import pika
 
 import cfglib
 from cloudferrylib.base import identity
@@ -29,7 +30,7 @@ from cloudferrylib.utils.utils import Templater
 from cloudferrylib.utils import utils as utl
 from sqlalchemy.exc import ProgrammingError
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 NO_TENANT = ''
 
 

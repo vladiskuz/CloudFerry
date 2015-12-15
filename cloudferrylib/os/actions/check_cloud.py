@@ -15,21 +15,22 @@
 import contextlib
 import time
 
+from cinderclient import exceptions as cinder_exc
+from glanceclient import exc as glance_exc
+from keystoneclient.openstack.common.apiclient import exceptions as ks_exc
+from neutronclient.common import exceptions as neutron_exc
+from novaclient import exceptions as nova_exc
+from oslo_log import log
+
 from cloudferrylib.base.action import action
-from cloudferrylib.utils import utils as utl
+from cloudferrylib.base import exception
 from cloudferrylib.os.identity.keystone import KeystoneIdentity
 from cloudferrylib.os.compute.nova_compute import NovaCompute
 from cloudferrylib.os.network.neutron import NeutronNetwork
 from cloudferrylib.os.image.glance_image import GlanceImage
 from cloudferrylib.os.storage.cinder_storage import CinderStorage
-from keystoneclient.openstack.common.apiclient import exceptions as ks_exc
-from novaclient import exceptions as nova_exc
-from glanceclient import exc as glance_exc
-from neutronclient.common import exceptions as neutron_exc
-from cinderclient import exceptions as cinder_exc
-from cloudferrylib.base import exception
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class CheckCloud(action.Action):

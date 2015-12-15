@@ -17,9 +17,9 @@ import pprint
 
 import ipaddr
 import netaddr
-
 from neutronclient.common import exceptions as neutron_exc
 from neutronclient.v2_0 import client as neutron_client
+from oslo_log import log
 
 from cloudferrylib.base import exception
 from cloudferrylib.base import network
@@ -28,7 +28,7 @@ from cloudferrylib.utils import cache
 from cloudferrylib.utils import utils as utl
 
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 DEFAULT_SECGR = 'default'
 
 

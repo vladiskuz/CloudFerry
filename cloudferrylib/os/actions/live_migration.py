@@ -40,7 +40,9 @@ Implements intercloud live migration functionality.
 
 
 import os
+
 from fabric.operations import prompt
+from oslo_log import log
 
 import cfglib
 from cloudferrylib.base.action import action
@@ -53,7 +55,7 @@ from cloudferrylib.utils import remote_runner
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class LiveMigration(action.Action):

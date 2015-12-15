@@ -1,5 +1,9 @@
-from oslo.config import cfg
+from oslo_config import cfg
+from oslo_log import log
+
 import addons
+
+
 src = cfg.OptGroup(name='src',
                    title='Credentials and general config for source cloud')
 
@@ -647,6 +651,7 @@ cfg_for_reg = [
     (evacuation, evacuation_opts),
 ]
 
+LOG = log.getLogger(__name__)
 CONF = cfg.CONF
 
 name_configs = ['configs/config.ini']

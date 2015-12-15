@@ -13,12 +13,11 @@
 # limitations under the License.
 import json
 import os
+from xml import etree
 
-from xml.etree import ElementTree
+from oslo_log import log
 
-from cloudferrylib.utils import utils
-
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 nova_instances_path = "/var/lib/nova/instances/"
 
@@ -194,7 +193,7 @@ class LibvirtXml(object):
         """
         :contents - XML file contents (text)
         """
-        self._xml = ElementTree.fromstring(contents)
+        self._xml = etree.ElementTree.fromstring(contents)
         self._interfaces = map(LibvirtDeviceInterface,
                                self._xml.findall('.//devices/interface'))
         self.disk_file = self._get('.//disk/source', 'file')
@@ -243,4 +242,4 @@ class LibvirtXml(object):
         for iface in self._interfaces:
             xml_devices.append(iface.element())
 
-        return ElementTree.tostring(self._xml)
+        return etree.ElementTree.tostring(self._xml)

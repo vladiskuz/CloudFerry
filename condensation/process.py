@@ -11,12 +11,14 @@
 # implied.
 # See the License for the specific language governing permissions and#
 # limitations under the License.
-import cfglib
+from oslo_log import log
 
+import cfglib
 from condensation import cloud
 from condensation import utils as condense_utils
-from cloudferrylib.utils import utils as utl
-LOG = utl.get_log(__name__)
+
+LOG = log.getLogger(__name__)
+
 SOURCE = "source"
 DESTINATION = "destination"
 

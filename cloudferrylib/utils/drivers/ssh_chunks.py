@@ -16,14 +16,14 @@
 import os
 import math
 
+from oslo_log import log
+
 from cloudferrylib.utils import driver_transporter
 from cloudferrylib.utils import files
 from cloudferrylib.utils import remote_runner
-from cloudferrylib.utils import utils
 from cloudferrylib.utils import ssh_util
 
-
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class FileCopyFailure(RuntimeError):

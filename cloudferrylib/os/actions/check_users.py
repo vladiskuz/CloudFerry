@@ -13,12 +13,14 @@
 # limitations under the License.
 from operator import attrgetter
 
+from oslo_log import log
+
 from cloudferrylib.base.action import action
 from cloudferrylib.base import exception as cf_exceptions
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class CheckUsersAvailabilityOnSrcAndDst(action.Action):

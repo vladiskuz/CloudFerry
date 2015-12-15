@@ -27,6 +27,7 @@ from glanceclient import exc as glance_exceptions
 from glanceclient.v1.images import CREATE_PARAMS
 
 from keystoneclient import exceptions as keystone_exceptions
+from oslo_log import log
 
 from cloudferrylib.base import exception
 from cloudferrylib.base import image
@@ -38,7 +39,7 @@ from cloudferrylib.utils import utils as utl
 from cloudferrylib.utils import remote_runner
 
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class GlanceImageProgessMigrationView(object):

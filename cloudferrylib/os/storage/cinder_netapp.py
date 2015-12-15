@@ -13,11 +13,12 @@
 # limitations under the License.
 
 
+from oslo_log import log
+
 from cloudferrylib.os.storage import cinder_database
-from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class CinderNetApp(cinder_database.CinderStorage):

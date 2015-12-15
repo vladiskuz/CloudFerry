@@ -14,11 +14,12 @@
 
 
 import copy
-import random
 import pprint
+import random
 
 from novaclient.v1_1 import client as nova_client
 from novaclient import exceptions as nova_exc
+from oslo_log import log
 
 from cloudferrylib.base import compute
 from cloudferrylib.os.compute import instances
@@ -30,7 +31,7 @@ from cloudferrylib.utils import timeout_exception
 from cloudferrylib.utils import utils as utl
 
 
-LOG = utl.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 DISK = "disk"

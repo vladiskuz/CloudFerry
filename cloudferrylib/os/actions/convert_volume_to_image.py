@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
+import copy
+
+from oslo_log import log
 
 from cloudferrylib.base.action import converter
 from cloudferrylib.utils import utils as utl
 
-from cloudferrylib.utils import utils
-import copy
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 CEPH = 'ceph'
 ACTIVE = 'active'
 BARE = "bare"

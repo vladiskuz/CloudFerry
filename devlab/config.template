@@ -1,4 +1,7 @@
 # Do not modify. This is template file. To change parameters please use 'config.ini'.
+[DEFAULT]
+debug = False
+log_config_append = configs/logging_config.ini
 
 [migrate]
 scenario = <scenario_file>

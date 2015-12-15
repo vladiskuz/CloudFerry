@@ -15,16 +15,19 @@
 
 
 import abc
+import os
+
+from fabric.context_managers import settings
+import jsondate
+from oslo_log import log
+
 from cloudferrylib.base.action import action
 from cloudferrylib.base.exception import AbortMigrationError
 from cloudferrylib.utils import remote_runner
 from cloudferrylib.utils import utils
-from fabric.context_managers import settings
 
-import jsondate
-import os
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 NAMESPACE_CINDER_CONST = "cinder_database"
 

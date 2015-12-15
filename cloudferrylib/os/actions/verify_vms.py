@@ -13,11 +13,12 @@
 # limitations under the License.
 
 
-from cloudferrylib.utils import utils
+from oslo_log import log
+
 from cloudferrylib.base import exception
 from cloudferrylib.base.action import action
 
-LOG = utils.get_log(__name__)
+LOG = log.getLogger(__name__)
 
 
 class VerifyVms(action.Action):

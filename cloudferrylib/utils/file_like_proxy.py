@@ -13,13 +13,13 @@
 # limitations under the License.
 
 
-import progressbar
 import re
 import time
 
-from utils import get_log
+from oslo_log import log
+import progressbar
 
-LOG = get_log(__name__)
+LOG = log.getLogger(__name__)
 
 # Maximum Bytes Per Packet
 CHUNK_SIZE = 512 * 1024  # B

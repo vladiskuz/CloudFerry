@@ -22,9 +22,6 @@ from cloudferrylib.utils import rbd_util
 from cloudferrylib.utils import utils
 
 
-LOG = utils.get_log(__name__)
-
-
 class SSHCephToCeph(driver_transporter.DriverTransporter):
     def transfer(self, data, snapshot=None, snapshot_type=1):
         host_src = (data.get('host_src') if data.get('host_src')

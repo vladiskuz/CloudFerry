@@ -13,11 +13,6 @@
 # limitations under the License.
 import os
 
-from cloudferrylib.utils import utils
-
-
-LOG = utils.get_log(__name__)
-
 
 class RemoteSymlink(object):
     def __init__(self, runner, target, symlink_name):

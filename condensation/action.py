@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and#
 # limitations under the License.
 
-import unicodedata
-import data_storage
-from cloudferrylib.utils import utils as utl
 import json
-LOG = utl.get_log(__name__)
+import unicodedata
+
+from oslo_log import log
+
+import data_storage
+LOG = log.getLogger(__name__)
 
 
 TRANSFER = "transfer"
